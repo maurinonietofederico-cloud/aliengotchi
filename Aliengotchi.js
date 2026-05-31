@@ -740,6 +740,52 @@
             nuevaRonda();
         }
 
+        function iniciarGuess() {
+    let numeroSecreto = Math.floor(Math.random() * 10) + 1;
+    let intentos = 3;
+    let acertado = false;
+
+    elements.gameContent.innerHTML = `
+        <div style="text-align:center; width:100%;">
+            <p>He pensado un número del 1 al 10. Tienes ${intentos} intentos.</p>
+            <input type="number" id="guessInput" min="1" max="10" placeholder="Escribe aquí">
+            <button id="guessBtn">Intentar</button>
+            <div id="guessResult"></div>
+        </div>
+    `;
+
+    const input = document.getElementById('guessInput');
+    const btn = document.getElementById('guessBtn');
+    const resultDiv = document.getElementById('guessResult');
+
+    function comprobar() {
+        const valor = parseInt(input.value);
+        if (isNaN(valor)) return;
+        intentos--;
+        if (valor === numeroSecreto) {
+            resultDiv.innerHTML = "¡Correcto! +35 DIV";
+            sumarDiversion();
+            setTimeout(cerrarJuego, 1500);
+            acertado = true;
+        } else if (intentos === 0) {
+            resultDiv.innerHTML = `Perdiste. El número era ${numeroSecreto}.`;
+            setTimeout(cerrarJuego, 1500);
+        } else {
+            let pista = (valor < numeroSecreto) ? "mayor" : "menor";
+            resultDiv.innerHTML = `Fallaste. Te quedan ${intentos} intentos. Prueba con un número ${pista}.`;
+            input.value = '';
+            input.focus();
+        }
+        if (acertado || intentos === 0) {
+            btn.disabled = true;
+            input.disabled = true;
+        }
+    }
+
+    btn.onclick = comprobar;
+    input.addEventListener('keypress', (e) => { if(e.key === 'Enter') comprobar(); });
+}
+
         function abrirMenuJuegos() {
             if (!mascota.viva || juegoActivo) return;
             elements.gameMenu.classList.remove('hidden');
@@ -752,6 +798,10 @@
             if (tipo === 'rps') { elements.gameTitle.innerText = 'Piedra Papel Tijeras'; iniciarRPS(); }
             else if (tipo === 'memory') { elements.gameTitle.innerText = 'Memotest'; iniciarMemory(); }
             else if (tipo === 'simon') { elements.gameTitle.innerText = 'Simon Dice'; iniciarSimon(); }
+            else if (tipo === 'guess') { 
+    elements.gameTitle.innerText = 'Adivina el Número'; 
+    iniciarGuess(); 
+}
         }
 
         // ==================== EVENTOS E INICIALIZACIÓN ====================
@@ -807,5 +857,16 @@
         if (gameLoop) clearInterval(gameLoop);
         gameLoop = null;
         elements.adoptionScreen.style.display = 'flex';
+        // ==================== MÚSICA DE FONDO ====================
+let musicaFondo = new Audio('assets/sounds/musica.mp3');
+musicaFondo.loop = true;
+musicaFondo.volume = 0.3;
+
+// Activar música con el primer clic del usuario en cualquier lugar
+document.body.addEventListener('click', () => {
+    if (musicaFondo.paused) {
+        musicaFondo.play().catch(e => console.log("El navegador bloqueó la reproducción automática"));
+    }
+}, { once: true });
     });
 })();
