@@ -31,13 +31,6 @@ Tamagotchi alienígena con estética retro Wii. Proyecto desarrollado para apren
 - **Repositorio**: https://github.com/maurinonietofederico-cloud/aliengotchi
 - **Tablero Kanban**: https://github.com/maurinonietofederico-cloud/aliengotchi/projects/1
 
-## 🖼️ Capturas de pantalla
-*Inserta aquí tus capturas (sube las imágenes a la carpeta `images/` y enlázalas)*
-
-![Pantalla principal](images/screenshot1.png)
-![Menú de comida](images/screenshot2.png)
-![Minijuego Adivina el número](images/screenshot3.png)
-
 ## 📦 Instalación local
 ```bash
 git clone https://github.com/maurinonietofederico-cloud/aliengotchi.git
