@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Aliengotchi · Tamagotchi Alien</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="wii-header">
+      <div class="wii-logo">ALIENGOTCHI</div>
+      <div class="led-indicators">
+        <span class="led led-green" id="ledStatus"></span>
+        <span class="led led-red"></span>
+      </div>
+    </div>
+
+    <div class="room" id="room">
+      <!-- Armario -->
+      <div class="wardrobe">
+        <img src="images/armario.png" alt="Armario" class="wardrobe-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="wardrobe-fallback">🚪</div>
+      </div>
+
+      <!-- Ventana -->
+      <div class="window">
+        <div class="window-pane"></div>
+        <div class="window-stars">✨🌟✨</div>
+      </div>
+
+      <!-- Lámpara -->
+      <div class="lamp" id="lamp">
+        <img src="images/lampara.png" alt="Lámpara" class="lamp-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="lamp-fallback">💡</div>
+        <div class="lamp-light" id="lampLight"></div>
+      </div>
+
+      <!-- Cama -->
+      <div class="bed" id="bed">
+        <img src="images/cama.png" alt="Cama" class="bed-image" id="bedImage">
+      </div>
+
+      <!-- Frigorífico -->
+      <div class="fridge" id="fridge">
+        <img src="images/nevera.png" alt="Nevera" class="fridge-image" id="fridgeImage">
+      </div>
+
+      <!-- Alien -->
+      <div class="alien-container" id="alienContainer">
+        <img id="alienAvatarImg" class="alien-avatar-img" src="images/alien_normal.png" alt="Alien">
+        <div class="alien-name">Alien</div>
+      </div>
+
+      <!-- Estadísticas -->
+      <div class="stats-card">
+        <div class="stat-row"><span class="stat-label">HAM</span><div class="stat-bar-bg"><div class="stat-bar-fill" id="barHunger"></div></div><span class="stat-num" id="valHunger">100</span></div>
+        <div class="stat-row"><span class="stat-label">ENE</span><div class="stat-bar-bg"><div class="stat-bar-fill" id="barEnergy"></div></div><span class="stat-num" id="valEnergy">100</span></div>
+        <div class="stat-row"><span class="stat-label">DIV</span><div class="stat-bar-bg"><div class="stat-bar-fill" id="barFun"></div></div><span class="stat-num" id="valFun">100</span></div>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="wii-remote">
+      <button class="wii-btn" id="btnFeed">COMER</button>
+      <button class="wii-btn" id="btnSleep">DORMIR</button>
+      <button class="wii-btn" id="btnPlay">JUGAR</button>
+      <button class="wii-btn reset" id="btnReset">RESET</button>
+    </div>
+
+    <!-- Menú de juegos -->
+    <div id="gameMenu" class="game-menu hidden">
+      <div class="game-menu-card"><h3>ELIGE UN JUEGO</h3><div class="game-options">
+        <button class="game-option" data-game="rps">Piedra Papel Tijeras</button>
+        <button class="game-option" data-game="memory">Memotest</button>
+        <button class="game-option" data-game="simon">Simón Dice</button>
+      </div><button class="close-menu" id="closeMenuBtn">CERRAR</button></div>
+    </div>
+
+    <!-- Menú de comida -->
+    <div id="foodMenu" class="food-menu hidden">
+      <div class="food-menu-card">
+        <h3>ELIGE COMIDA</h3>
+        <div class="food-options" id="foodOptions"></div>
+        <button class="close-menu" id="closeFoodMenuBtn">CERRAR</button>
+      </div>
+    </div>
+
+    <!-- Pantalla de adopción (selector de alienígenas) -->
+    <div id="adoptionScreen" class="adoption-screen">
+      <div class="adoption-card">
+        <h2>Elige tu compañero</h2>
+        <div class="alien-cards">
+          <div class="alien-card" data-alien="verde">
+            <img src="images/alien_verde/normal.png" alt="Verde" onerror="this.src='https://via.placeholder.com/80?text=🟢'">
+            <p>Alien Verde</p>
+            <button>Elegir</button>
+          </div>
+          <div class="alien-card" data-alien="azul">
+            <img src="images/alien_azul/normal.png" alt="Azul" onerror="this.src='https://via.placeholder.com/80?text=🔵'">
+            <p>Alien Azul</p>
+            <button>Elegir</button>
+          </div>
+          <div class="alien-card" data-alien="rojo">
+            <img src="images/alien_rojo/normal.png" alt="Rojo" onerror="this.src='https://via.placeholder.com/80?text=🔴'">
+            <p>Alien Rojo</p>
+            <button>Elegir</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenedor de juegos -->
+    <div id="gameContainer" class="game-container hidden">
+      <div class="game-header"><span id="gameTitle"></span><button id="exitGameBtn" class="exit-game">✖</button></div>
+      <div id="gameContent" class="game-content"></div>
+    </div>
+
+    <!-- Game Over -->
+    <div id="gameOverlay" class="game-overlay hidden" style="display: none !important;">
+      <div class="gameover-card"><div class="gameover-icon">💀</div><div class="gameover-title">GAME OVER</div><div id="gameoverMsg"></div><button id="resetFromOverlay" class="wii-btn reset">REINICIAR</button></div>
+    </div>
+  </div>
+  <script src="aliengotchi.js"></script>
+</body>
+</html>
